@@ -1,6 +1,6 @@
 # sell
 
-> vueHungry
+> A Vue.js project
 
 ## Build Setup
 
