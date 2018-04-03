@@ -11,7 +11,7 @@ module.exports = {
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential', 
+    'plugin:vue/essential',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
     'standard'
   ],
@@ -25,9 +25,9 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // 如果没有分号就报错！
-    // 'semi': ['error', 'always'],
-    // 'indent': 0,
-    // 'space-before-function-paren': 0
+    // 尾部如果没有分号就报黄色错误！
+    'semi': ['error', 'always'],
+    'indent': 0,
+    'space-before-function-paren': 0
   }
-}
+};
