@@ -19,7 +19,9 @@ const routes = [
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 let router = new VueRouter({
-  routes
+  routes,
+  // 实例化选中时，添加一个class，名为：active
+  linkActiveClass: 'active'
 });
 
 export default router;

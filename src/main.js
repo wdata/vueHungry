@@ -5,6 +5,9 @@ import VueResource from 'vue-resource';
 import App from './App.vue';
 import router from './router/index.js';
 
+import 'common/stylus/index.styl';
+
+// 全局注册vue-resource
 Vue.use(VueResource);
 
 /* eslint-disable no-new */

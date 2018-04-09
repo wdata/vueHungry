@@ -28,6 +28,7 @@ module.exports = {
     // 尾部如果没有分号就报黄色错误！
     'semi': ['error', 'always'],
     'indent': 0,
+    // 在function() {}中间加空格，0：关闭此规则；
     'space-before-function-paren': 0
   }
 };
