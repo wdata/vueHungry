@@ -11,24 +11,15 @@ Vue.use(VueRouter);
 
 // 2.0 vue写法
 const routes = [
-  { path: './goods', component: goods },
-  { path: './seller', component: seller },
-  { path: './ratings', component: ratings },
-  { path: '*', redirect: '/goods' }
+  { path: '/', redirect: '/goods' },
+  { path: '/goods', component: goods },
+  { path: '/seller', component: seller },
+  { path: '/ratings', component: ratings }
 ];
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 let router = new VueRouter({
   routes
 });
-console.log(router);
+
 export default router;
-// export default new VueRouter({
-//   routes: [
-//     {
-//       path: '/',
-//       name: 'HelloWorld',
-//       component: routes
-//     }
-//   ]
-// });
