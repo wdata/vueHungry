@@ -13,9 +13,7 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <router-view class="content">
-      I am content
-    </router-view>
+    <router-view :seller="seller" class="content"></router-view>
   </div>
 </template>
 
@@ -37,7 +35,6 @@
         response = response.body;
         if (response.errno === ERR_OK) {
           this.seller = response.data;
-          console.log(this.seller);
         }
       }, response => {
         // error callback 失败

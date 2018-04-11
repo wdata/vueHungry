@@ -29,6 +29,8 @@ module.exports = {
     'semi': ['error', 'always'],
     'indent': 0,
     // 在function() {}中间加空格，0：关闭此规则；
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    // 在使用v-for时，不添加:key
+    'vetur.validation.template': false,
   }
 };
