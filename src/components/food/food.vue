@@ -1,13 +1,149 @@
 <template>
-  <div class="food-content">
-    <div class="image-header">
-      <img src="" alt="">
+  <div class="food" ref="food" v-show="showFlag">
+    <div class="food-content">
+      <div class="image-header">
+        <img :src="food.icon" alt="">
+        <div class="back" @click="hide">
+          <i class="icon-arrow_lift"></i>
+        </div>
+      </div>
+      <div class="content" >
+        <h1 class="title">{{ food.name }}</h1>
+        <div class="detail">
+          <span class="sell-count">月售{{ food.sellCount}}份</span>
+          <span class="rating">好评率{{ food.rating }}%</span>
+        </div>
+        <div class="price">
+          <span class="now">￥{{ food.price }}</span>
+          <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
+        </div>
+        <div class="cartcontrol-wrapper">
+          <cartcontrol @add="addFood" :food="food"></cartcontrol>
+        </div>
+        <transition name="fade">
+          <div class="buy" @click="addFirst" v-show="!food.count ||  food.count === 0">加入购物车</div>
+        </transition>
+      </div>
+      <split v-show="food.info"></split>
+      <div class="info" v-show="food.info">
+        <h1 class="title">商品信息</h1>
+        <p class="text">{{ food.info }}</p>
+      </div>
+      <split></split>
+      <div class="rating">
+        <ratingselect
+          @select="selectRating" @toggle="toggleContent"
+          :desc="desc" :selectType="selectType" :ratings="food.ratings" :onlyContent="onlyContent"
+        ></ratingselect>
+        <div class="rating-wrapper">
+          <ul>
+            <li class="rating-item border-1px" v-for="(item, index) in food.ratings" :key="index" v-show="needShow(item.rateType, item.text)">
+              <div class="user">
+                <span class="name">{{ item.username }}</span>
+                <img width="12" height="12" :src="item.avatar" class="avatar">
+              </div>
+              <div class="time">{{ item.rateTime | formatDate }}</div>
+              <p class="text">
+                <span class="icon-thumb_up"></span>{{ item.text }}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {};
+  import BScroll from 'better-scroll';
+  import Vue from 'vue';
+  import {formatDate} from '../../common/js/date.js';
+  import cartcontrol from '../../components/cartcontrol/cartcontrol.vue';
+  import split from '../../components/split/split.vue';
+  import ratingselect from '../../components/ratingselect/ratingselect.vue';
+
+  const ALL = 2;
+  export default {
+    props: {
+      food: {
+        type: Object
+      }
+    },
+    data() {
+      return {
+        showFlag: false,
+        selectType: ALL | this.food.selectType,
+        onlyContent: true,
+        desc: {
+          all: '全部',
+          positive: '推荐',
+          negative: '吐槽'
+        }
+      };
+    },
+    methods: {
+      show() {
+        this.showFlag = true;
+        this.selectType = ALL;
+        this.onlyContent = true;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.food, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      },
+      hide() {
+        this.showFlag = false;
+      },
+      addFirst(event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.$emit('add', event.target);
+        Vue.set(this.food, 'count', 1);
+      },
+      addFood(target) {
+        // this.$emit('add', target);
+      },
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return this.selectType === type;
+        }
+      },
+      selectRating(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      }
+    },
+    filters: {
+      formatDate(time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+      }
+    },
+    components: {
+      cartcontrol,
+      split,
+      ratingselect
+    }
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

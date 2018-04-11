@@ -40,17 +40,17 @@
         </ul>
       </div>
       <div>
-        <shopcart :selectFoods="selectFoods" :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice"></shopcart>
+        <shopcart ref="shopcart" :selectFoods="selectFoods" :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice"></shopcart>
       </div>
     </div>
-    <food :food="selectFood" rel="food"></food>
+    <food @add="addFood" :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
-  import cartcontrol from '../../components/cartcontrol/cartcontrol.vue';
   import shopcart from '../../components/shopcart/shopcart.vue';
+  import cartcontrol from '../../components/cartcontrol/cartcontrol.vue';
   import food from '../../components/food/food.vue';
 
   const ERR_OK = 0;
@@ -75,7 +75,6 @@
         for (let i = 0; i < this.listHeight.length; i++) {
           let height1 = this.listHeight[i];
           let height2 = this.listHeight[i + 1];
-          console.log(height1);
           if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
             this._followScroll(i);
             return i;
@@ -145,7 +144,7 @@
         this.foodsScroll.on('scroll', (pos) => {
           // 判断滑动方向，避免下拉时分类高亮错误（如第一分类商品数量为1时，下拉使得第二分类高亮）
           if (pos.y <= 0) {
-            this.scrollY = Math.abs(Math.round(pos));
+            this.scrollY = Math.abs(Math.round(pos.y));
           }
         });
       },
